@@ -1,0 +1,58 @@
+import UserRepository from "../repositories/user.repository";
+
+export const getUserById =  async (req, res) => {
+    if (req.params.userId) {
+        try {
+            const data = await UserRepository.getUserById(req.params.userId);
+            res.json(data);
+        } catch (err) {
+            res.json({message: err});
+        }
+    }
+};
+
+export const createUser = async (req, res) => {
+    if(req.body) {
+        try {
+            const response = await UserRepository.createNewUser(req.body);
+            if(response.success) {
+                res.json(response);
+            } else {
+                throw new Error("Erreur de création de l'utilisateur");
+            }
+        } catch (err) {
+            res.json({message: err});
+        }
+    }
+};
+
+export const getUsers = async (req, res) => {
+    try {
+        const data = await UserRepository.getAllUsers();
+        res.json(data);
+    } catch (err) {
+        res.json({message: err});
+    }
+};
+
+export const deleteUserById = async (req, res) => {
+    if(req.params.userId) {
+        try {
+            const removedUser = await UserRepository.deleteUser(req.params.userId);
+            res.json(removedUser);
+        } catch (err) {
+            res.json({message: err});
+        }
+    }
+};
+
+export const getReceivedMessages = async (req, res) => {
+    if (req.params.userId) {
+        try {
+            const data = await UserRepository.getReceivedMessages(req.params.userId);
+            res.json(data);
+        } catch (err) {
+            res.json({message: err});
+        }
+    }
+};
