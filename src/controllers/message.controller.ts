@@ -13,6 +13,8 @@ export const readMessage = async (req, res) => {
         } catch (err) {
             res.json({message: err});
         }
+    } else {
+        res.json({error: "Missing parameter."});
     }
 };
 
