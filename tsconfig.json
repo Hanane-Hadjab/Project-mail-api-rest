@@ -2,13 +2,15 @@
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
     "allowJs": true,
+    "baseUrl": ".",
     "target": "es6",
     "rootDir": "src",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"],

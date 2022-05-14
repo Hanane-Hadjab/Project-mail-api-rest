@@ -75,7 +75,6 @@ export const readMessage = async (userId: string, messageId: string) => {
         return Promise.reject("Access denied to read this message");
     }
     const messageUPdated = await Message.updateOne({_id: messageId}, {$set: {isReading: true}});
-
     try {
         const result = Promise.all([messageUPdated, message]);
         return result;
