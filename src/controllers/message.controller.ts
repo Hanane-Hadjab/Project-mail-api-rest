@@ -28,7 +28,7 @@ export const sendMessage = async (req, res) => {
             if (response.success) {
                 res.json(response);
             } else {
-                throw new Error("Erreur de création de message");
+                res.json({error: "Error creating message"});
             }
         } catch (err) {
             res.json({message: err});
@@ -46,7 +46,6 @@ export const updateMessage = async (req, res) => {
         const body = req.body;
         try {
             const updatedMessage = await MessageRepository.updateMessage(req.params.userId, req.params.messageId, body);
-            console.log(updatedMessage);
             res.json(updatedMessage);
         } catch (e) {
             res.json({message: e});

@@ -9,4 +9,5 @@ export interface MessageInterface {
     'isReading': Boolean,
     'isHistored': Boolean,
     'content': string
+    'parentId': string
 }
