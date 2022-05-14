@@ -14,7 +14,7 @@ const checkIfEmailIsValid = async (message: any) => {
     return res;
 };
 
-export const createNewMessage = async (body) => {
+export const sendMessage = async (body) => {
     const messageBody: MessageInterface = {
         id: uuid(),
         type: body.type,
@@ -47,7 +47,7 @@ export const createNewMessage = async (body) => {
     }
 };
 
-export const getMessageById = async (messageId: string) => {
+export const readMessage = async (messageId: string) => {
     const message = await Message.findById(messageId);
     const messageUPdated = await Message.updateOne({_id: messageId}, {$set: {isReading: true}});
     try {
@@ -96,8 +96,8 @@ export const getDeletedMessages = async () => {
 };
 
 export default {
-    createNewMessage,
-    getMessageById,
+    sendMessage,
+    readMessage,
     updateMessage,
     deleteMessage,
     getAllMessages,

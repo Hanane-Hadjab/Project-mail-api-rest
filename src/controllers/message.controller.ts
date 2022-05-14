@@ -1,9 +1,9 @@
 import MessageRepository from '../repositories/message.repository';
 
-export const getMessageById = async (req, res) => {
+export const readMessage = async (req, res) => {
     if (req.params.messageId) {
         try {
-            const data = await MessageRepository.getMessageById(req.params.messageId);
+            const data = await MessageRepository.readMessage(req.params.messageId);
             res.json(data[1]);
         } catch (err) {
             res.json({message: err});
@@ -11,10 +11,10 @@ export const getMessageById = async (req, res) => {
     }
 };
 
-export const createMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
     if (req.body) {
         try {
-            const response = await MessageRepository.createNewMessage(req.body);
+            const response = await MessageRepository.sendMessage(req.body);
             if (response.success) {
                 res.json(response);
             } else {
