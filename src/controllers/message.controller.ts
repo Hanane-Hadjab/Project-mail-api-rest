@@ -56,4 +56,13 @@ export const getAllMessages = async (req, res) => {
     } catch (err) {
         res.json({message: err});
     }
-}
+};
+
+export const getDeletedMessages = async (req, res) => {
+    try {
+        const data = await MessageRepository.getDeletedMessages();
+        res.json(data);
+    } catch (err) {
+        res.json({message: err});
+    }
+};
