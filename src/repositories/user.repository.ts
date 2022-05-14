@@ -27,6 +27,7 @@ export const createNewUser = async (body) => {
 };
 export const checkUser = async (id: string) => {
     const res = await User.findById(id).exec();
+    console.log(res);
     if (res) return true;
     return false;
 };
@@ -82,6 +83,23 @@ export const loginUser = async (userId: string) => {
     }
 };
 
+const checkIfUserIsConnected = async (userId: string) => {
+    const res = await User.find({_id: userId, isConnected: true}).exec();
+    if (res.length > 0) return true;
+    return false;
+};
+
+export const logOutUser = async (userId: string) => {
+    try {
+        const user_connected = await checkIfUserIsConnected(userId);
+        const user = await User.updateOne({_id: userId}, {$set: {isConnected: false}});
+        const result = Promise.all([user_connected, user]);
+        return result;
+    } catch (e) {
+        throw new Error("erreur de déconnexion de l'utilisateur");
+    }
+};
+
 export default {
     createNewUser,
     checkUser,
@@ -89,6 +107,7 @@ export default {
     getUserById,
     deleteUser,
     getReceivedMessages,
-    loginUser
+    loginUser,
+    logOutUser
 };
 

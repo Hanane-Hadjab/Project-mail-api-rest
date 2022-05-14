@@ -13,9 +13,8 @@ const checkTypeValidation = (type_value: string, helpers: any) => {
 const checkUserValidation = async (id: string, helpers: any) => {
     try {
         const response = await checkUser(id);
-        if (! response) return helpers.error('any.invalid');
-
-        return response;
+        if (response) return true ;
+        return helpers.error('any.invalid');
 
     } catch (e) {
        throw new Error("Erreur de l'appel api");
@@ -23,12 +22,8 @@ const checkUserValidation = async (id: string, helpers: any) => {
 };
 
 export const schema = Joi.object().keys({
-    type: Joi.string().custom(checkTypeValidation, 'type validation').required(),
-    sendTo: Joi.string().custom(checkUserValidation, 'user validation').required(),
-    sendBy: Joi.string().custom(checkUserValidation, 'user validation').required(),
-    createdAt: Joi.string(),
-    updatedAt: Joi.string(),
-    deletedAt: Joi.string(),
-    isReading: Joi.boolean(),
-    isHistored: Joi.boolean(),
+    type: Joi.custom(checkTypeValidation, 'type validation').required(),
+    sendTo: Joi.custom(checkUserValidation, 'user validation').required(),
+    sendBy: Joi.custom(checkUserValidation, 'send by validation').required(),
+    content: Joi.string().required(),
 });

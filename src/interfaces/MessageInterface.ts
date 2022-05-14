@@ -8,4 +8,5 @@ export interface MessageInterface {
     'deleted_at': Date,
     'isReading': Boolean,
     'isHistored': Boolean,
+    'content': string
 }

@@ -16,4 +16,6 @@ userRouter.get('/:userId/received-messages', asyncHandler(UserController.getRece
 
 userRouter.patch('/:userId/login', asyncHandler(UserController.loginUser));
 
+userRouter.patch('/:userId/logout', asyncHandler(UserController.logOutUser));
+
 export default userRouter;

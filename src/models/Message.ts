@@ -20,7 +20,8 @@ const MessageSchema = new mongoose.Schema({
         type: Date,
     },
     deletedAt: {
-        type: Date
+        type: Date,
+        default: null
     },
     isReading: {
         type: Boolean,
@@ -29,6 +30,10 @@ const MessageSchema = new mongoose.Schema({
     isHistored: {
         type: Boolean,
         default: false
+    },
+    content: {
+        type: String,
+        required: true
     }
 });
 export default mongoose.model('Message', MessageSchema);

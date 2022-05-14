@@ -4,6 +4,8 @@ import asyncHandler from 'express-async-handler';
 
 const messageRouter = express.Router();
 
+messageRouter.get('/delete-messages', asyncHandler(MessageController.getDeletedMessages));
+
 messageRouter.post('/create', asyncHandler(MessageController.createMessage));
 
 messageRouter.get('/', asyncHandler(MessageController.getAllMessages));
