@@ -34,6 +34,10 @@ const MessageSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true
+    },
+    parentId:{
+        type: String,
+        default: null
     }
 });
 export default mongoose.model('Message', MessageSchema);

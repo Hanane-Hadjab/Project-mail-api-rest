@@ -28,7 +28,7 @@ export const createUser = async (req, res) => {
             if (response.success) {
                 res.json(response);
             } else {
-                throw new Error("Erreur de création de l'utilisateur");
+                throw new Error("Error in creating user");
             }
         } catch (err) {
             res.json({message: err});
@@ -92,9 +92,9 @@ export const loginUser = async (req, res) => {
         try {
             const logedUser = await UserRepository.loginUser(req.params.userId);
             if (logedUser[0]) {
-                res.json({message: 'Bienvenue dans votre espace profil'});
+                res.json({message: 'Welcome to your profile page.'});
             } else {
-                res.json({message: "Vous n'existez pas dans notre base"});
+                res.json({message: "You do not exist in our base."});
             }
 
         } catch (e) {
@@ -113,9 +113,9 @@ export const logOutUser  = async (req, res) => {
       try {
           const logOutUser = await UserRepository.logOutUser(req.params.userId);
           if (logOutUser[0]) {
-              res.json({message: 'Deconnecte Bye!'});
+              res.json({message: 'Disconnect Bye!'});
           } else {
-              res.json({message: "Vous n'existez pas dans notre base de donées ou vous n'etes pas connecté ! "});
+              res.json({message: "You do not exist in our database or you are not connected to deconnect! "});
           }
       } catch (e) {
           res.json({message: e});

@@ -2,6 +2,10 @@ import User from "../models/User";
 import * as userValidation from "../validations/user.validation";
 import Message from "../models/Message";
 
+/**
+ * Create new user
+ * @param body
+ */
 export const createNewUser = async (body) => {
     let res;
     try {
@@ -25,13 +29,20 @@ export const createNewUser = async (body) => {
         return response;
     }
 };
+
+/**
+ * Check user by id in data base
+ * @param id
+ */
 export const checkUser = async (id: string) => {
     const res = await User.findById(id).exec();
-    console.log(res);
     if (res) return true;
     return false;
 };
 
+/**
+ * Get all users of data base
+ */
 export const getAllUsers = async () => {
     try {
         const data = await User.find();
@@ -42,6 +53,10 @@ export const getAllUsers = async () => {
     }
 }
 
+/**
+ * Get information of user by id
+ * @param userId
+ */
 export const getUserById = async (userId: string) => {
     try {
         const data = await User.findById(userId);
@@ -51,6 +66,10 @@ export const getUserById = async (userId: string) => {
     }
 };
 
+/**
+ * Delete user by id
+ * @param userId
+ */
 export const deleteUser = async (userId: string) => {
     try {
         const removedUser = User.remove({_id: userId});
@@ -61,6 +80,10 @@ export const deleteUser = async (userId: string) => {
     }
 };
 
+/**
+ * Get received Messages of user
+ * @param userId
+ */
 export const getReceivedMessages = async (userId: string) => {
     try {
         const data = await Message.find({sendTo: userId});
@@ -71,6 +94,10 @@ export const getReceivedMessages = async (userId: string) => {
     }
 };
 
+/**
+ * Login user
+ * @param userId
+ */
 export const loginUser = async (userId: string) => {
     try {
         const user_existing = await checkUser(userId);
@@ -83,12 +110,20 @@ export const loginUser = async (userId: string) => {
     }
 };
 
+/**
+ * Check if user is connected
+ * @param userId
+ */
 const checkIfUserIsConnected = async (userId: string) => {
     const res = await User.find({_id: userId, isConnected: true}).exec();
     if (res.length > 0) return true;
     return false;
 };
 
+/**
+ * LogOut user
+ * @param userId
+ */
 export const logOutUser = async (userId: string) => {
     try {
         const user_connected = await checkIfUserIsConnected(userId);
@@ -96,7 +131,7 @@ export const logOutUser = async (userId: string) => {
         const result = Promise.all([user_connected, user]);
         return result;
     } catch (e) {
-        throw new Error("erreur de déconnexion de l'utilisateur");
+        throw new Error("Erreur de déconnexion de l'utilisateur");
     }
 };
 
