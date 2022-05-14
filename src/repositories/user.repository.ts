@@ -11,14 +11,14 @@ export const createNewUser = async (body) => {
         return {error: e.stack};
     }
 
-    if(!res.error) {
+    if (!res.error) {
         const user = new User(body);
         user.save();
 
         let response: any;
-        user ? response={
+        user ? response = {
             success: "L'utilisateur a été bien crée",
-        } : response={
+        } : response = {
             error: "Erreur de création de l'utilisateur",
         };
 
@@ -26,8 +26,8 @@ export const createNewUser = async (body) => {
     }
 };
 export const checkUser = async (id: string) => {
-    const res = User.findById(id).exec();
-    if(res) return true;
+    const res = await User.findById(id).exec();
+    if (res) return true;
     return false;
 };
 
@@ -51,25 +51,34 @@ export const getUserById = async (userId: string) => {
 };
 
 export const deleteUser = async (userId: string) => {
-  try {
-      const removedUser = User.remove({_id: userId});
+    try {
+        const removedUser = User.remove({_id: userId});
 
-      return removedUser;
-  } catch (err) {
-      throw new Error("Erreur de récupération de l'utilisateur");
-  }
+        return removedUser;
+    } catch (err) {
+        throw new Error("Erreur de récupération de l'utilisateur");
+    }
 };
 
 export const getReceivedMessages = async (userId: string) => {
     try {
-        try {
-            const data = await Message.find({sendTo: userId});
-            return data;
-        } catch (e) {
-            throw new Error('Erreur de récupération de tous les messages');
-        }
+        const data = await Message.find({sendTo: userId});
+        return data;
+
     } catch (e) {
         throw new Error("Erreur de récupération des message récu par l'utilisateur");
+    }
+};
+
+export const loginUser = async (userId: string) => {
+    try {
+        const user_existing = await checkUser(userId);
+        const user = await User.updateOne({_id: userId}, {$set: {isConnected: true}});
+        const result = Promise.all([user_existing, user]);
+
+        return result;
+    } catch (e) {
+        throw new Error("erreur de login de l'utilisateur");
     }
 };
 
@@ -79,6 +88,7 @@ export default {
     getAllUsers,
     getUserById,
     deleteUser,
-    getReceivedMessages
+    getReceivedMessages,
+    loginUser
 };
 

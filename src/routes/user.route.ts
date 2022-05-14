@@ -14,4 +14,6 @@ userRouter.delete('/:userId', asyncHandler(UserController.deleteUserById));
 
 userRouter.get('/:userId/received-messages', asyncHandler(UserController.getReceivedMessages));
 
+userRouter.patch('/:userId/login', asyncHandler(UserController.loginUser));
+
 export default userRouter;

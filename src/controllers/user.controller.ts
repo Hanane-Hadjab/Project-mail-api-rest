@@ -56,3 +56,19 @@ export const getReceivedMessages = async (req, res) => {
         }
     }
 };
+
+export const loginUser = async (req, res) => {
+  if (req.params.userId) {
+      try {
+          const logedUser = await UserRepository.loginUser(req.params.userId);
+              if(logedUser[0]) {
+                  res.json({message: 'Bienvenue dans votre espace profil'});
+              } else {
+                  res.json({message: "Vous n'existez pas dans notre base"});
+              }
+
+      } catch (e) {
+          res.json({message: e});
+      }
+  }
+};
