@@ -4,16 +4,16 @@ import asyncHandler from 'express-async-handler';
 
 const messageRouter = express.Router();
 
-messageRouter.get('/delete-messages', asyncHandler(MessageController.getDeletedMessages));
+messageRouter.get('/user/:userId/delete-messages', asyncHandler(MessageController.getDeletedMessages));
 
-messageRouter.post('/create', asyncHandler(MessageController.createMessage));
+messageRouter.post('/user/:userId/messages/create', asyncHandler(MessageController.sendMessage));
 
-messageRouter.get('/', asyncHandler(MessageController.getAllMessages));
+messageRouter.get('/user/:userId/messages', asyncHandler(MessageController.getAllMessages));
 
-messageRouter.patch('/:messageId/delete', asyncHandler(MessageController.deleteMessage));
+messageRouter.patch('/user/:userId/messages/:messageId/delete', asyncHandler(MessageController.deleteMessage));
 
-messageRouter.get('/:messageId', asyncHandler(MessageController.getMessageById));
+messageRouter.get('/user/:userId/messages/:messageId', asyncHandler(MessageController.readMessage));
 
-messageRouter.patch('/:messageId', asyncHandler(MessageController.updateMessage));
+messageRouter.patch('/user/:userId/messages/:messageId', asyncHandler(MessageController.updateMessage));
 
 export default messageRouter;

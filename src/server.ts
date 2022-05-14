@@ -9,7 +9,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/messages', messageRoute);
+app.use(messageRoute);
 app.use('/users', userRoute);
 
 db.then(() => {

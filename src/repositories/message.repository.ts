@@ -14,7 +14,7 @@ const checkIfEmailIsValid = async (message: any) => {
     return res;
 };
 
-export const createNewMessage = async (body) => {
+export const sendMessage = async (body) => {
     const messageBody: MessageInterface = {
         id: uuid(),
         type: body.type,
@@ -30,8 +30,6 @@ export const createNewMessage = async (body) => {
 
     const isValid = await checkIfEmailIsValid(messageBody);
 
-    console.log(isValid);
-    console.log("apref ", messageBody);
     if (!isValid.error) {
         const message = new Message(messageBody);
         message.save();
@@ -46,49 +44,76 @@ export const createNewMessage = async (body) => {
         return response;
     }
 };
+const findMessageById = async (messageId: string) => {
+    const messaeg =  await Message.findById(messageId);
 
-export const getMessageById = async (messageId: string) => {
-    const message = await Message.findById(messageId);
+    return messaeg;
+}
+export const readMessage = async (userId: string, messageId: string) => {
+    const message = await findMessageById(messageId);
+
+    if (message.sendTo !== userId && message.sendBy !== userId) {
+        return Promise.reject("Access denied to read this message");
+    }
     const messageUPdated = await Message.updateOne({_id: messageId}, {$set: {isReading: true}});
+
     try {
         const result = Promise.all([messageUPdated, message]);
         return result;
+
     } catch (e) {
         throw new Error("Erreur de récupération de message");
     }
 };
 
-export const updateMessage = async (messageId: string, body: any) => {
+export const updateMessage = async (userId: string, messageId: string, body: any) => {
     try {
+        const message = await findMessageById(messageId);
+        if (message.sendTo !== userId && message.sendBy !== userId) {
+            return Promise.reject("Access denied to update this message");
+        }
+
         const updatedMessage = Message.updateOne({_id: messageId}, {$set: body});
+
         return updatedMessage;
+
     } catch (e) {
         throw new Error('Erreur de modification de message');
     }
 };
 
-export const deleteMessage = async (messageId: string) => {
+export const deleteMessage = async (userId: string, messageId: string) => {
     try {
-        const updatedMessage = Message.updateOne({_id: messageId}, {$set: {deletedAt: new Date()}});
+        const message = await findMessageById(messageId);
+        if (message.sendTo !== userId && message.sendBy !== userId) {
+            return Promise.reject("Access denied to delete this message");
+        }
+        const updatedMessage = await Message.updateOne({_id: messageId}, {$set: {deletedAt: new Date()}});
         return updatedMessage;
     } catch (e) {
         throw new Error('Erreur de suppression de message');
     }
 };
 
-export const getAllMessages = async () => {
+export const getAllMessages = async (userId: string) => {
     try {
-        const data = await Message.find();
+        const data = await Message.find(
+            { $or: [{sendTo: userId}, {sendBy: userId}]
+            });
 
+        console.log(data);
         return data;
     } catch (e) {
         throw new Error('Erreur de récupération de tous les messages');
     }
 };
 
-export const getDeletedMessages = async () => {
+export const getDeletedMessages = async (userId: string) => {
     try {
-        const data = await Message.find({deletedAt : { $ne: null }});
+        const data = await Message.find({
+            $or: [{ sendTo: userId }, {sendBy: userId}],
+            deletedAt : { $ne: null },
+        });
         return data;
     } catch (e) {
         throw new Error('Erreur de récupération des messages dans la corbeille');
@@ -96,8 +121,8 @@ export const getDeletedMessages = async () => {
 };
 
 export default {
-    createNewMessage,
-    getMessageById,
+    sendMessage,
+    readMessage,
     updateMessage,
     deleteMessage,
     getAllMessages,

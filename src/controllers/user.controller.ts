@@ -1,5 +1,10 @@
 import UserRepository from "../repositories/user.repository";
 
+/**
+ * Function to get user by id
+ * @param req
+ * @param res
+ */
 export const getUserById = async (req, res) => {
     if (req.params.userId) {
         try {
@@ -11,6 +16,11 @@ export const getUserById = async (req, res) => {
     }
 };
 
+/**
+ * Function to create user
+ * @param req
+ * @param res
+ */
 export const createUser = async (req, res) => {
     if (req.body) {
         try {
@@ -26,6 +36,11 @@ export const createUser = async (req, res) => {
     }
 };
 
+/**
+ * Function to get all users of data base
+ * @param req
+ * @param res
+ */
 export const getUsers = async (req, res) => {
     try {
         const data = await UserRepository.getAllUsers();
@@ -35,6 +50,11 @@ export const getUsers = async (req, res) => {
     }
 };
 
+/**
+ * Function to delete user by id
+ * @param req
+ * @param res
+ */
 export const deleteUserById = async (req, res) => {
     if (req.params.userId) {
         try {
@@ -46,6 +66,11 @@ export const deleteUserById = async (req, res) => {
     }
 };
 
+/**
+ * Function to get received messages
+ * @param req
+ * @param res
+ */
 export const getReceivedMessages = async (req, res) => {
     if (req.params.userId) {
         try {
@@ -57,6 +82,11 @@ export const getReceivedMessages = async (req, res) => {
     }
 };
 
+/**
+ * Function to login
+ * @param req
+ * @param res
+ */
 export const loginUser = async (req, res) => {
     if (req.params.userId) {
         try {
@@ -73,6 +103,11 @@ export const loginUser = async (req, res) => {
     }
 };
 
+/**
+ * Function to logout the user
+ * @param req
+ * @param res
+ */
 export const logOutUser  = async (req, res) => {
   if(req.params.userId) {
       try {
